@@ -20,18 +20,44 @@ const WHATSAPP_OPTIONS = {
  */
 window.WentouraWhatsApp = {
     /**
+     * Detect if the user is on a mobile device.
+     * Uses navigator.userAgentData when available for better accuracy.
+     */
+    isMobileDevice: function() {
+        try {
+            if (navigator.userAgentData && typeof navigator.userAgentData.mobile === 'boolean') {
+                return navigator.userAgentData.mobile;
+            }
+        } catch (e) {
+            // ignore
+        }
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent || '');
+    },
+
+    /**
+     * Return the appropriate WhatsApp base URL depending on platform.
+     * On mobile we use api.whatsapp.com which redirects to WhatsApp app when possible.
+     * On desktop we use web.whatsapp.com.
+     */
+    getWhatsAppBase: function() {
+        return this.isMobileDevice() ? 'https://api.whatsapp.com/send' : 'https://web.whatsapp.com/send';
+    },
+    /**
      * Send to primary number - FIXED VERSION
      */
     sendToPrimary: function(formData) {
         console.log('Sending to WhatsApp with data:', formData);
         const message = this.formatMessage(formData);
         console.log('Formatted message:', message);
-        
-        // Use web.whatsapp.com with proper encoding
-        const link = 'https://web.whatsapp.com/send?phone=' + WHATSAPP_NUMBERS.primary + '&text=' + encodeURIComponent(message);
-        console.log('WhatsApp link:', link);
-        
-        window.open(link, '_blank');
+        const base = this.getWhatsAppBase();
+        const link = base + '?phone=' + WHATSAPP_NUMBERS.primary + '&text=' + encodeURIComponent(message);
+        console.log('WhatsApp link:', link, 'mobile?', this.isMobileDevice());
+        // On mobile, navigate the current window (so the OS can open the app); on desktop open a new tab.
+        if (this.isMobileDevice()) {
+            window.location.href = link;
+        } else {
+            window.open(link, '_blank');
+        }
     },
     
     /**
@@ -43,8 +69,13 @@ window.WentouraWhatsApp = {
             return;
         }
         const message = this.formatMessage(formData);
-        const link = 'https://web.whatsapp.com/send?phone=' + WHATSAPP_NUMBERS.secondary + '&text=' + encodeURIComponent(message);
-        window.open(link, '_blank');
+        const base = this.getWhatsAppBase();
+        const link = base + '?phone=' + WHATSAPP_NUMBERS.secondary + '&text=' + encodeURIComponent(message);
+        if (this.isMobileDevice()) {
+            window.location.href = link;
+        } else {
+            window.open(link, '_blank');
+        }
     },
     
     /**
@@ -94,7 +125,8 @@ window.WentouraWhatsApp = {
     getLink: function(formData, number) {
         const message = this.formatMessage(formData);
         const phoneNumber = number === 'secondary' ? WHATSAPP_NUMBERS.secondary : WHATSAPP_NUMBERS.primary;
-        return 'https://web.whatsapp.com/send?phone=' + phoneNumber + '&text=' + encodeURIComponent(message);
+        const base = this.getWhatsAppBase();
+        return base + '?phone=' + phoneNumber + '&text=' + encodeURIComponent(message);
     },
     
     /**
