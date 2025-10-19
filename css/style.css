@@ -1,3 +1,90 @@
+/* custom Wentoura UI components */
+.wentoura-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 9998;
+}
+.wentoura-whatsapp-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ffffff;
+  padding: 22px 20px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.25);
+  z-index: 9999;
+  max-width: 420px;
+  width: calc(100% - 40px);
+  text-align: left;
+}
+.wentoura-modal-title {
+  margin: 0 0 8px 0;
+  color: #222;
+  font-weight: 600;
+  font-size: 18px;
+}
+.wentoura-modal-sub {
+  margin: 0 0 16px 0;
+  color: #556;
+  font-size: 14px;
+}
+.btn-wapp-send, .btn-wapp-skip {
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+}
+.btn-wapp-send {
+  background: #25D366;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.btn-wapp-send:hover { opacity: 0.95; }
+.btn-wapp-skip {
+  background: #f0f0f0;
+  color: #333;
+}
+
+/* Alerts */
+.wentoura-alert {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background: #fff;
+  color: #222;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(12, 20, 30, 0.12);
+  z-index: 11000;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.25s ease;
+  max-width: 360px;
+  font-size: 14px;
+}
+.wentoura-alert.visible { opacity: 1; transform: translateY(0); }
+.wentoura-alert-success { border-left: 4px solid #28a745; }
+.wentoura-alert-error { border-left: 4px solid #dc3545; }
+.wentoura-alert-info { border-left: 4px solid #17a2b8; }
+
+@media (max-width: 480px) {
+  .wentoura-whatsapp-modal { padding: 18px; }
+  .wentoura-modal-title { font-size: 16px; }
+}
+
+/* Enquiry modal tweaks */
+.modal-lg { max-width: 920px; }
+.modal-content { border-radius: 12px; }
+.modal-body .form-row .form-group { margin-bottom: 12px; }
+.modal-body .form-group label { font-weight: 600; font-size: 14px; }
+.modal-footer .btn { min-width: 120px; }
+
+
 /*!
  * Bootstrap v4.5.0 (https://getbootstrap.com/)
  * Copyright 2011-2020 The Bootstrap Authors
